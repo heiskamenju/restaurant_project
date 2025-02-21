@@ -9,12 +9,15 @@
 
                                 <v-card-subtitle> {{ item.description }} </v-card-subtitle>
                             </v-card-item>
-                            <v-img height="200px" src="public/Food Menu Template PSD.jpg" cover ></v-img>
+                            <v-img height="200px" :src="item.image" cover ></v-img>
 
                             <v-card-text>
                                 price: {{ item.price }}
                                 size: {{ item.size }}   
                             </v-card-text>
+                            <v-btn color="pink"> 
+                                order <v-icon icon="mdi-cart"></v-icon>   
+                            </v-btn>
                         </v-card>
                         <v-card color="#92d42b">
                             <v-card-item>
@@ -22,16 +25,46 @@
 
                             <v-card-subtitle>This is a card subtitle</v-card-subtitle>
                             </v-card-item>
-                            <v-img height="200px" src="public/Creamy Cajun Sausage Pasta (One Pot).jpg" cover ></v-img>
+                            <v-img height="200px" :src="item.image" cover ></v-img>
 
                             <v-card-text>
                                 price: {{ item.price }}
                                 size: {{ item.size }}   
                             </v-card-text>
+                            <v-btn color="pink" @click="addToOrder(item)">
+                                order <v-icon icon="mdi-cart"></v-icon>   
+                            </v-btn>
                         </v-card>
                     </v-card>
                 </v-col>
             </v-row>
+    </v-container>
+    <v-container>
+        <v-card color="blue" >
+            <v-card-title>
+                <div class="text-h6">Current order: {{totalOrderAmount}}</div>
+            </v-card-title>
+        </v-card>
+    </v-container>
+    <v-container>
+        <v-card class="mx-auto" elevation="24">
+            <v-container>
+                <v-row>
+                    <v-col cols="12" md="4" v-for="item in orderItems" :key=item>
+                        <v-card color="yellow">
+                            <v-card-item>
+                            <v-card-title>{{ item.name }}</v-card-title>
+
+                            <v-card-subtitle>{{ item.description }}</v-card-subtitle>
+                            </v-card-item>
+                            <v-img height="200px" :src="item.image" cover ></v-img>
+
+                            <v-card-text>{{ item.price }}</v-card-text>
+                        </v-card>
+                        </v-col>
+                </v-row>
+            </v-container>
+        </v-card>
     </v-container>
 </template>
 
@@ -43,7 +76,7 @@ const menuItems = [
         description: "Best chips in town",
         size: "Large",
         offers: "None",
-        image: "https://unsplash.com/photos/a-basket-of-french-fries-sitting-on-top-of-a-wooden-table-ChXHveqrb28?utm_content=creditShareLink&utm_medium=referral&utm_source=unsplash"
+        image: "/public/chips.jpg"
     },
     {
         name: "lobster",
@@ -51,7 +84,7 @@ const menuItems = [
         description: "Best lobster in town",
         size: "None",
         offers: "None",
-        image: "https://unsplash.com/photos/sausage-on-black-round-pan-cSxpCQrRlo8"
+        image: "/public/Grilled Lobster Tails.jpg"
     },
     {
         name: "prawns",
@@ -59,7 +92,7 @@ const menuItems = [
         description: "Best prawns in town",
         size: "Large",
         offers: "None",
-        image: "https://unsplash.com/photos/a-basket-of-french-fries-sitting-on-top-of-a-wooden-table-ChXHveqrb28?utm_content=creditShareLink&utm_medium=referral&utm_source=unsplash"
+        image: "/public/prawns.jpg"
     },
     {
         name: "sausage",
@@ -67,7 +100,7 @@ const menuItems = [
         description: "Best sausage in town",
         size: "Large",
         offers: "None",
-        image: "https://unsplash.com/photos/a-basket-of-french-fries-sitting-on-top-of-a-wooden-table-ChXHveqrb28?utm_content=creditShareLink&utm_medium=referral&utm_source=unsplash"
+        image: "/public/Sausages.jpg"
     },
     {
         name: "Biryani",
@@ -75,7 +108,7 @@ const menuItems = [
         description: "Best biryani in town",
         size: "Large",
         offers: "None",
-        image: "https://unsplash.com/photos/a-basket-of-french-fries-sitting-on-top-of-a-wooden-table-ChXHveqrb28?utm_content=creditShareLink&utm_medium=referral&utm_source=unsplash"
+        image: "/public/biriyani rice.jpg"
     },
     {
         name: "burger",
@@ -83,7 +116,23 @@ const menuItems = [
         description: "Best burger in town",
         size: "Large",
         offers: "None",
-        image: "https://unsplash.com/photos/a-basket-of-french-fries-sitting-on-top-of-a-wooden-table-ChXHveqrb28?utm_content=creditShareLink&utm_medium=referral&utm_source=unsplash"
+        image: "/public/crack burgers.jpg"
     },
 ]
+//manage the current state of the order
+var orderItems = []
+var totalOrderAmount = 0   
+
+function calculateTotalAmount(price){
+   totalOrderAmount += price
+    }
+function addToOrder(item){
+    orderItems.push(item)
+    totalOrderAmount += item.price
+}
+function removeFromOrder(item){
+    orderItems = orderItems.filter(orderItem => orderItem !== item)
+    totalOrderAmount -= item.price
+}
+
 </script>
